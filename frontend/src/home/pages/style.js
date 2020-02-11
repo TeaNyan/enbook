@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const HomeBg = styled.div`
   width: 100%;
-  height: 750px;
-  background: url("/images/bg6.jpg");
+  height: calc(100vw * 0.4);
+  background: url('/images/bg6.jpg');
   background-repeat: no-repeat;
   background-size: 100%;
   display: flex;
@@ -24,21 +24,22 @@ export const BgText = styled.span`
 `;
 
 export const GetStartedButton = styled.button`
-  width: 120px;
-  height: 36px;
+  width: 160px;
+  height: 50px;
   background-color: #fd953c;
   border: 0;
   border-radius: 4px;
   color: #fff;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 1.4em;
+  cursor: pointer;
 `;
 
 export const HomeTags = styled.div`
   margin: 38px;
   min-width: 720px;
   width: 70%;
-  height: 600px;
+  height: auto;
   background-color: #021839;
   display: flex;
   flex-direction: column;

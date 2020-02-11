@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { NavLink } from 'react-router-dom';
+
 export const Header = styled.header`
   width: 100%;
   height: 50px;
@@ -20,4 +22,24 @@ export const HeaderRow = styled.div`
   box-sizing: border-box;
   justify-content: ${props => props.align};
   align-items: center;
+`;
+
+export const NavButton = styled(NavLink)`
+  height: 100%;
+`;
+
+export const LogIn = styled.div`
+  width: 100px;
+  height: 30px;
+  border: 4px solid #021839;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-weight: 700;
+  margin: 8px;
+  box-sizing: border-box;
+  background-color: #021839;
 `;

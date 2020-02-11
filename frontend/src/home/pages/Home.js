@@ -1,29 +1,32 @@
-import React from "react";
-import FlightTakeoffOutlinedIcon from "@material-ui/icons/FlightTakeoffOutlined";
-import MenuBookOutlinedIcon from "@material-ui/icons/MenuBookOutlined";
-import PhotoCameraOutlinedIcon from "@material-ui/icons/PhotoCameraOutlined";
-import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
+import React from 'react';
+import FlightTakeoffOutlinedIcon from '@material-ui/icons/FlightTakeoffOutlined';
+import MenuBookOutlinedIcon from '@material-ui/icons/MenuBookOutlined';
+import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
+import GroupAddOutlinedIcon from '@material-ui/icons/GroupAddOutlined';
+import { Overlay } from '@blueprintjs/core';
 
-import { HomeBg, BgText, GetStartedButton, HomeTags, TagText } from "./style";
-import { Column } from "../../shared/layouts/Column";
-import { Row } from "../../shared/layouts/Row";
+import { HomeBg, BgText, GetStartedButton, HomeTags, TagText } from './style';
+import { Column } from '../../shared/layouts/Column';
+import { Row } from '../../shared/layouts/Row';
+import Modal from '../../shared/Modal';
 
 const Home = () => {
   return (
     <Column>
       <HomeBg>
-        <BgText className={"bgText"}>
+        <Modal i>Overlaid contents...</Modal>
+        <BgText className={'bgText'}>
           <h1>Do you like to travel and take photos?</h1>
         </BgText>
-        <BgText className={"bgTexth2"}>
+        <BgText className={'bgTexth2'}>
           <h2>Sign up now and write your own travel blogs.</h2>
           <h2>Discover new places by following other travelers.</h2>
         </BgText>
         <GetStartedButton>Get started</GetStartedButton>
       </HomeBg>
       <HomeTags>
-        <Row justifyContent={"center"}>
-          <Row width={"50%"}>
+        <Row justifyContent={'center'}>
+          <Row width={'50%'}>
             <FlightTakeoffOutlinedIcon
               style={{ fontSize: 60, marginRight: 20 }}
             />
@@ -34,7 +37,7 @@ const Home = () => {
               text and you're all set.
             </TagText>
           </Row>
-          <Row width={"50%"}>
+          <Row width={'50%'}>
             <MenuBookOutlinedIcon style={{ fontSize: 60, marginRight: 20 }} />
             <TagText>
               Many people remember their journeys only through photos. All the
@@ -45,8 +48,8 @@ const Home = () => {
             </TagText>
           </Row>
         </Row>
-        <Row justifyContent={"center"}>
-          <Row width={"50%"}>
+        <Row justifyContent={'center'}>
+          <Row width={'50%'}>
             <PhotoCameraOutlinedIcon
               style={{ fontSize: 60, marginRight: 20 }}
             />
@@ -57,7 +60,7 @@ const Home = () => {
               a picture of it? We live in a digital world after all.
             </TagText>
           </Row>
-          <Row width={"50%"}>
+          <Row width={'50%'}>
             <GroupAddOutlinedIcon style={{ fontSize: 60, marginRight: 20 }} />
             <TagText>
               Traveling alone can be relaxing, but 83% of people say that they

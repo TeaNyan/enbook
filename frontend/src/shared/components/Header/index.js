@@ -1,8 +1,27 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 
-import { Header } from './style';
-import { HeaderRow } from './style';
+import { Header, HeaderRow, NavButton, LogIn } from './style';
+
+const loggedIn = () => {
+  return (
+    <HeaderRow>
+      <NavButton to="/" exact>
+        Home
+      </NavButton>
+      <NavButton to="/places" exact>
+        Places
+      </NavButton>
+    </HeaderRow>
+  );
+};
+
+const logIn = () => {
+  return (
+    <HeaderRow align="right">
+      <LogIn>Log in</LogIn>
+    </HeaderRow>
+  );
+};
 
 const MainHeader = props => {
   return (
@@ -11,14 +30,7 @@ const MainHeader = props => {
         <img src="/logo.png" alt="logo"></img>
       </HeaderRow>
       <HeaderRow></HeaderRow>
-      <HeaderRow>
-        <NavLink to="/" exact>
-          Home
-        </NavLink>
-        <NavLink to="/places" exact>
-          Places
-        </NavLink>
-      </HeaderRow>
+      {logIn()}
     </Header>
   );
 };
