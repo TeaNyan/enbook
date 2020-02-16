@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from "react";
 
-import { Header, HeaderRow, NavButton, LogIn } from './style';
+import { Header, HeaderRow, NavButton, LogIn } from "./style";
 
 const loggedIn = () => {
   return (
@@ -15,15 +15,17 @@ const loggedIn = () => {
   );
 };
 
-const logIn = () => {
-  return (
-    <HeaderRow align="right">
-      <LogIn>Log in</LogIn>
-    </HeaderRow>
-  );
-};
-
 const MainHeader = props => {
+  const { onOpenModal, onCloseModal } = props;
+
+  const logIn = useCallback(() => {
+    return (
+      <HeaderRow align="right">
+        <LogIn onClick={onOpenModal}>Log in</LogIn>
+      </HeaderRow>
+    );
+  }, [onOpenModal, onCloseModal]);
+
   return (
     <Header>
       <HeaderRow align="left">
