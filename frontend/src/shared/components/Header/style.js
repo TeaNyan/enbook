@@ -31,7 +31,6 @@ export const NavButton = styled(NavLink)`
 export const LogIn = styled.div`
   width: 100px;
   height: 30px;
-  border: 4px solid #021839;
   color: #fff;
   display: flex;
   flex-direction: row;
@@ -42,4 +41,5 @@ export const LogIn = styled.div`
   margin: 8px;
   box-sizing: border-box;
   background-color: #021839;
+  cursor: pointer;
 `;
