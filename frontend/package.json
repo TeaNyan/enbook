@@ -10,6 +10,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.2.6",
+    "express": "^4.17.1",
+    "heroku": "^7.38.1",
     "react": "^16.12.0",
     "react-backdrop-filter": "^2.1.0",
     "react-dom": "^16.12.0",
@@ -20,7 +22,7 @@
     "styled-components": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
