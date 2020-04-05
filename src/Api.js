@@ -21,7 +21,6 @@ const fetchApi = (url, { method, body }) => {
         .then((json) => (res.ok ? json : Promise.reject(json)))
     )
     .then(async (res) => {
-      console.log("res", res);
       return {
         data: {
           email: res.email,
@@ -54,5 +53,21 @@ export const login = (email, password) =>
       password,
     },
   });
+
+export const signup = (name, email, password) =>
+  fetchApi("/users/signup", {
+    method: "POST",
+    body: {
+      email,
+      password,
+      name,
+    },
+  });
+
+export const logout = () => {
+  fetchApi("/users/logout", {
+    method: "POST",
+  });
+};
 
 export const getMe = () => fetchApi("/users/me", { method: "GET" });

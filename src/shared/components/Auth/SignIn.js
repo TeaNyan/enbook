@@ -2,6 +2,9 @@ import React, { useCallback } from "react";
 import { FormGroup, Classes, Button } from "@blueprintjs/core";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
+import { connect } from "react-redux";
+
+import * as Actions from "../../../redux/actions";
 
 import {
   Container,
@@ -14,11 +17,11 @@ import {
 const SignIn = (props) => {
   const { register, handleSubmit } = useForm();
 
-  const { onToggleSignIn, onSignIn } = props;
+  const { onToggleSignIn, onSignIn, loginError } = props;
 
   const onSubmit = useCallback(
     async (d) => {
-      const res = await onSignIn(d);
+      await onSignIn(d);
     },
     [onSignIn]
   );
@@ -56,6 +59,7 @@ const SignIn = (props) => {
               }}
             />
           </FormGroup>
+          {loginError && <div>{loginError.title}</div>}
           <Button className={classNames(Classes.INTENT_WARNING)} type="submit">
             Sign in
           </Button>
@@ -71,4 +75,8 @@ const SignIn = (props) => {
   );
 };
 
-export default SignIn;
+export default connect((state) => {
+  return {
+    loginError: state.login.error,
+  };
+}, Actions)(SignIn);

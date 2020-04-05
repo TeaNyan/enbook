@@ -1,8 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { FormGroup, Classes, Button } from "@blueprintjs/core";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
+import { connect } from "react-redux";
 
+import * as Actions from "../../../redux/actions";
+import { selectLogoutRequest } from "../../../redux/selectors";
 import {
   Container,
   Input,
@@ -12,13 +15,28 @@ import {
 } from "./style";
 
 const SignUp = (props) => {
+  const [isError, setIsError] = useState("");
   const { register, handleSubmit } = useForm();
 
-  const { onToggleSignIn } = props;
+  const { onToggleSignIn, signup, request, signupError } = props;
 
-  const onSubmit = useCallback((d) => {
-    console.log(d.text);
-  }, []);
+  useEffect(() => {
+    console.log("ovdje");
+    if (request.status === -1) {
+      setIsError(request.title);
+    }
+  }, [request]);
+
+  const onSubmit = useCallback(
+    async (d) => {
+      if (d.password !== d.confirmPassword)
+        return setIsError("Password missmatch");
+      setIsError("");
+      console.log("ovdje", d.name, d.email, d.password);
+      await signup(d.name, d.email, d.password);
+    },
+    [signup]
+  );
 
   return (
     <div className={props.className}>
@@ -30,7 +48,7 @@ const SignUp = (props) => {
               id="text-input"
               placeholder="Enter your name"
               inputRef={register}
-              name="email"
+              name="name"
               type="text"
               style={{
                 backgroundColor: "#021839",
@@ -69,7 +87,7 @@ const SignUp = (props) => {
               id="text-input"
               placeholder="Confirm password"
               inputRef={register}
-              name="password"
+              name="confirmPassword"
               type="password"
               style={{
                 backgroundColor: "#021839",
@@ -79,6 +97,7 @@ const SignUp = (props) => {
               }}
             />
           </FormGroup>
+          {signupError && <div>{signupError.title}</div>}
           <Button className={classNames(Classes.INTENT_WARNING)} type="submit">
             Sign in
           </Button>
@@ -94,4 +113,9 @@ const SignUp = (props) => {
   );
 };
 
-export default SignUp;
+export default connect((state) => {
+  return {
+    request: selectLogoutRequest(state),
+    signupError: state.signup.error,
+  };
+}, Actions)(SignUp);

@@ -94,7 +94,6 @@ function* doFetchMe() {
   try {
     yield put(fetchMeLoading());
     const [me] = yield all([call(Api.getMe)]);
-    console.log(me);
     yield put(fetchMeSuccess(me.data));
   } catch (err) {
     yield put(fetchMeError(err));

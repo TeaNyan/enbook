@@ -1,5 +1,4 @@
 import { all, put, takeLatest, call } from "redux-saga/effects";
-import { push } from "connected-react-router";
 
 import { fetchMeSuccess } from "./me";
 import * as Api from "../../Api";
@@ -9,44 +8,45 @@ import * as Api from "../../Api";
 // :: CONSTANTS
 //
 ///////////////////////////////////////////////////////////////////////////////
-const LOGIN_REQUEST = "LOGIN_REQUEST";
-const LOGIN_LOADING = "LOGIN_LOADING";
-const LOGIN_ERROR = "LOGIN_ERROR";
-const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+const SIGNUP_REQUEST = "SIGNUP_REQUEST";
+const SIGNUP_LOADING = "SIGNUP_LOADING";
+const SIGNUP_ERROR = "SIGNUP_ERROR";
+const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: ACTIONS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const login = (email, password) => {
+export const signup = (name, email, password) => {
   return {
-    type: LOGIN_REQUEST,
+    type: SIGNUP_REQUEST,
     payload: {
       email,
       password,
+      name,
     },
   };
 };
 
-export const loginLoading = () => {
+export const signupLoading = () => {
   return {
-    type: LOGIN_LOADING,
+    type: SIGNUP_LOADING,
   };
 };
 
-export const loginSuccess = () => {
+export const signupSuccess = () => {
   return {
-    type: LOGIN_SUCCESS,
+    type: SIGNUP_SUCCESS,
     payload: {
       success: true,
     },
   };
 };
 
-export const loginError = (error) => {
+export const signupError = (error) => {
   return {
-    type: LOGIN_ERROR,
+    type: SIGNUP_ERROR,
     payload: {
       error,
     },
@@ -62,13 +62,13 @@ const defaultState = { isLoading: false, error: null, success: false };
 
 export const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case SIGNUP_REQUEST:
       return defaultState;
-    case LOGIN_LOADING:
+    case SIGNUP_LOADING:
       return { ...state, isLoading: true };
-    case LOGIN_ERROR:
-      return { isLoading: false, error: action.payload.error };
-    case LOGIN_SUCCESS:
+    case SIGNUP_ERROR:
+      return { isLoading: false, error: action.payload.error, success: false };
+    case SIGNUP_SUCCESS:
       return { ...state, isLoading: false, success: true };
     default:
       return state;
@@ -80,26 +80,28 @@ export const reducer = (state = defaultState, action) => {
 // :: SELECTORS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const selectLoginRequest = (store) => store.login;
+export const selectSignupRequest = (store) => store.signup;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: SAGAS
 //
 ///////////////////////////////////////////////////////////////////////////////
-function* doLogin({ payload }) {
+function* doSignup({ payload }) {
   try {
-    yield put(loginLoading());
-    const [me] = yield all([call(Api.login, payload.email, payload.password)]);
-    console.log("melogin", me);
+    yield put(signupLoading());
+    const [me] = yield all([
+      call(Api.signup, payload.name, payload.email, payload.password),
+    ]);
+    console.log("me", me);
     yield put(fetchMeSuccess(me.data));
-    yield put(loginSuccess());
-    yield put(push("/places"));
+    yield put(signupSuccess());
   } catch (err) {
-    yield put(loginError(err));
+    console.log(err);
+    yield put(signupError(err));
   }
 }
 
 export const sagas = function* () {
-  yield takeLatest(LOGIN_REQUEST, doLogin);
+  yield takeLatest(SIGNUP_REQUEST, doSignup);
 };

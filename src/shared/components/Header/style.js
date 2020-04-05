@@ -43,3 +43,19 @@ export const LogIn = styled.div`
   background-color: #021839;
   cursor: pointer;
 `;
+
+export const LogOut = styled.div`
+  width: 100px;
+  height: 30px;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-weight: 700;
+  margin: 8px;
+  box-sizing: border-box;
+  background-color: #021839;
+  cursor: pointer;
+`;

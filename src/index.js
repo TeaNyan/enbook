@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createBrowserHistory } from "history";
+import { ConnectedRouter } from "connected-react-router";
 import createStore from "./redux/store";
 import App from "./App";
 import "./index.css";
@@ -12,7 +13,9 @@ const store = createStore({}, history);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
   </Provider>,
   document.getElementById("root")
 );

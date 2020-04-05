@@ -1,5 +1,5 @@
-import { all, put, takeLatest, call } from "redux-saga/effects";
-import { push } from "connected-react-router";
+import { put, takeLatest, call } from "redux-saga/effects";
+import { push as navigateTo } from "connected-react-router";
 
 import { fetchMeSuccess } from "./me";
 import * as Api from "../../Api";
@@ -9,44 +9,37 @@ import * as Api from "../../Api";
 // :: CONSTANTS
 //
 ///////////////////////////////////////////////////////////////////////////////
-const LOGIN_REQUEST = "LOGIN_REQUEST";
-const LOGIN_LOADING = "LOGIN_LOADING";
-const LOGIN_ERROR = "LOGIN_ERROR";
-const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+const LOGOUT_LOADING = "LOGOUT_LOADING";
+const LOGOUT_ERROR = "LOGOUT_ERROR";
+const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: ACTIONS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const login = (email, password) => {
+export const logout = () => {
   return {
-    type: LOGIN_REQUEST,
-    payload: {
-      email,
-      password,
-    },
+    type: LOGOUT_REQUEST,
   };
 };
 
-export const loginLoading = () => {
+export const logoutLoading = () => {
   return {
-    type: LOGIN_LOADING,
+    type: LOGOUT_LOADING,
   };
 };
 
-export const loginSuccess = () => {
+export const logoutSuccess = () => {
   return {
-    type: LOGIN_SUCCESS,
-    payload: {
-      success: true,
-    },
+    type: LOGOUT_SUCCESS,
   };
 };
 
-export const loginError = (error) => {
+export const logoutError = (error) => {
   return {
-    type: LOGIN_ERROR,
+    type: LOGOUT_ERROR,
     payload: {
       error,
     },
@@ -62,13 +55,13 @@ const defaultState = { isLoading: false, error: null, success: false };
 
 export const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case LOGOUT_REQUEST:
       return defaultState;
-    case LOGIN_LOADING:
+    case LOGOUT_LOADING:
       return { ...state, isLoading: true };
-    case LOGIN_ERROR:
+    case LOGOUT_ERROR:
       return { isLoading: false, error: action.payload.error };
-    case LOGIN_SUCCESS:
+    case LOGOUT_SUCCESS:
       return { ...state, isLoading: false, success: true };
     default:
       return state;
@@ -80,26 +73,25 @@ export const reducer = (state = defaultState, action) => {
 // :: SELECTORS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const selectLoginRequest = (store) => store.login;
+export const selectLogoutRequest = (store) => store.logout;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: SAGAS
 //
 ///////////////////////////////////////////////////////////////////////////////
-function* doLogin({ payload }) {
+function* doLogout() {
   try {
-    yield put(loginLoading());
-    const [me] = yield all([call(Api.login, payload.email, payload.password)]);
-    console.log("melogin", me);
-    yield put(fetchMeSuccess(me.data));
-    yield put(loginSuccess());
-    yield put(push("/places"));
+    yield put(logoutLoading());
+    yield call(Api.logout);
+    yield put(fetchMeSuccess(null));
+    yield put(logoutSuccess());
+    //yield put(navigateTo("/"));
   } catch (err) {
-    yield put(loginError(err));
+    yield put(logoutError(err));
   }
 }
 
 export const sagas = function* () {
-  yield takeLatest(LOGIN_REQUEST, doLogin);
+  yield takeLatest(LOGOUT_REQUEST, doLogout);
 };

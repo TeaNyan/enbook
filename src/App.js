@@ -1,25 +1,41 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { Spinner } from "@blueprintjs/core";
 
+import PrivateRoute from "./shared/components/PrivateRoute";
 import Home from "./home/pages/Home";
 import Places from "./places/pages/Places";
 import * as Actions from "./redux/actions";
+import { selectMeRequest } from "./redux/selectors";
 
-function App({ fetchMe }) {
+const RedirectToHome = () => <Redirect to="/" />;
+
+function App({ fetchMe, me, request }) {
   useEffect(() => {
     const checkMe = async () => {
-      fetchMe();
+      if (!me) fetchMe();
     };
     checkMe();
-  }, [fetchMe]);
+  }, [fetchMe, me]);
+
+  if (request.isLoading) {
+    return <Spinner></Spinner>;
+  }
 
   return (
-    <Router>
+    <Switch>
       <Route path="/" exact component={Home}></Route>
-      <Route path="/places" exact component={Places}></Route>
-    </Router>
+      <PrivateRoute
+        exact
+        path="/places"
+        hasAccess={!!me}
+        whenTrue={Places}
+        whenFalse={RedirectToHome}></PrivateRoute>
+    </Switch>
   );
 }
 
-export default connect(null, Actions)(App);
+export default connect((state) => {
+  return { me: state.me.data, request: selectMeRequest(state) };
+}, Actions)(App);

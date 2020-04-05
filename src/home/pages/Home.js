@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import FlightTakeoffOutlinedIcon from "@material-ui/icons/FlightTakeoffOutlined";
 import MenuBookOutlinedIcon from "@material-ui/icons/MenuBookOutlined";
 import PhotoCameraOutlinedIcon from "@material-ui/icons/PhotoCameraOutlined";
@@ -14,13 +14,11 @@ import { Row } from "../../shared/layouts/Row";
 import Modal from "../../shared/Modal";
 
 import * as Actions from "../../redux/actions";
-import { selectLoginRequest } from "../../redux/selectors";
+import { selectLoginRequest, selectSignupRequest } from "../../redux/selectors";
 
-const Home = ({ login, fetchMe, me }) => {
+const Home = ({ login, me, logout, loginRequest, signupRequest }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
-
-  console.log(me);
 
   const handleOpenModal = useCallback(() => {
     setIsModalOpen(true);
@@ -33,7 +31,6 @@ const Home = ({ login, fetchMe, me }) => {
   const handleToggleSignIn = useCallback(() => {
     const nextIsSignIn = !isSignIn;
 
-    console.log(nextIsSignIn);
     setIsSignIn(nextIsSignIn);
   }, [isSignIn]);
 
@@ -46,9 +43,26 @@ const Home = ({ login, fetchMe, me }) => {
     return;
   };
 
+  const logoutAttempt = async () => {
+    try {
+      await logout();
+    } catch (e) {
+      return e.message;
+    }
+    return;
+  };
+
+  useEffect(() => {
+    loginRequest.success && setIsModalOpen(false);
+  }, [loginRequest]);
+
+  useEffect(() => {
+    signupRequest.success && setIsModalOpen(false);
+  }, [signupRequest]);
+
   return (
     <React.Fragment>
-      <Header onOpenModal={handleOpenModal} />
+      <Header onOpenModal={handleOpenModal} me={me} onLogout={logoutAttempt} />
       <Column>
         {isModalOpen && (
           <Modal
@@ -129,5 +143,7 @@ const Home = ({ login, fetchMe, me }) => {
 export default connect((state) => {
   return {
     me: state.me,
+    loginRequest: selectLoginRequest(state),
+    signupRequest: selectSignupRequest(state),
   };
 }, Actions)(Home);
