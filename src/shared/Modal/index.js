@@ -1,10 +1,10 @@
 import React from "react";
 
-import { Overlay, Classes } from "@blueprintjs/core";
+import { Overlay } from "@blueprintjs/core";
 
 import { OverLayout } from "./style";
 
-const Modal = props => {
+const Modal = (props) => {
   const { onCloseModal } = props;
 
   return (

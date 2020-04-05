@@ -29,3 +29,13 @@ export const ForgotPassword = styled.div`
   font-size: 0.8em;
   margin-top: 15px;
 `;
+
+export const LinkButton = styled.div`
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline;
+`;

@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import FlightTakeoffOutlinedIcon from "@material-ui/icons/FlightTakeoffOutlined";
 import MenuBookOutlinedIcon from "@material-ui/icons/MenuBookOutlined";
 import PhotoCameraOutlinedIcon from "@material-ui/icons/PhotoCameraOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
+import { connect } from "react-redux";
 
 import { HomeBg, BgText, GetStartedButton, HomeTags, TagText } from "./style";
 import SignIn from "../../shared/components/Auth/SignIn";
@@ -12,9 +13,14 @@ import { Column } from "../../shared/layouts/Column";
 import { Row } from "../../shared/layouts/Row";
 import Modal from "../../shared/Modal";
 
-const Home = props => {
+import * as Actions from "../../redux/actions";
+import { selectLoginRequest } from "../../redux/selectors";
+
+const Home = ({ login, fetchMe, me }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
+
+  console.log(me);
 
   const handleOpenModal = useCallback(() => {
     setIsModalOpen(true);
@@ -31,6 +37,15 @@ const Home = props => {
     setIsSignIn(nextIsSignIn);
   }, [isSignIn]);
 
+  const loginAttempt = async (data) => {
+    try {
+      await login(data.email, data.password);
+    } catch (e) {
+      return e.message;
+    }
+    return;
+  };
+
   return (
     <React.Fragment>
       <Header onOpenModal={handleOpenModal} />
@@ -40,7 +55,10 @@ const Home = props => {
             onCloseModal={handleCloseModal}
             onToggleSignIn={handleToggleSignIn}>
             {isSignIn ? (
-              <SignIn onToggleSignIn={handleToggleSignIn} />
+              <SignIn
+                onToggleSignIn={handleToggleSignIn}
+                onSignIn={loginAttempt}
+              />
             ) : (
               <SignUp onToggleSignIn={handleToggleSignIn} />
             )}
@@ -108,4 +126,8 @@ const Home = props => {
   );
 };
 
-export default Home;
+export default connect((state) => {
+  return {
+    me: state.me,
+  };
+}, Actions)(Home);

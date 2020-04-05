@@ -3,16 +3,25 @@ import { FormGroup, Classes, Button } from "@blueprintjs/core";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
 
-import { Container, Input, StyledForm, ForgotPassword } from "./style";
+import {
+  Container,
+  Input,
+  StyledForm,
+  ForgotPassword,
+  LinkButton,
+} from "./style";
 
-const SignIn = props => {
+const SignIn = (props) => {
   const { register, handleSubmit } = useForm();
 
-  const { onToggleSignIn } = props;
+  const { onToggleSignIn, onSignIn } = props;
 
-  const onSubmit = useCallback(d => {
-    console.log(d.text);
-  });
+  const onSubmit = useCallback(
+    async (d) => {
+      const res = await onSignIn(d);
+    },
+    [onSignIn]
+  );
 
   return (
     <div className={props.className}>
@@ -30,7 +39,7 @@ const SignIn = props => {
                 backgroundColor: "#021839",
                 border: 0,
                 borderBottom: "2px solid #fd953c",
-                color: "#fff"
+                color: "#fff",
               }}
             />
             <Input
@@ -43,7 +52,7 @@ const SignIn = props => {
                 backgroundColor: "#021839",
                 border: 0,
                 borderBottom: "2px solid #fd953c",
-                color: "#fff"
+                color: "#fff",
               }}
             />
           </FormGroup>
@@ -53,9 +62,9 @@ const SignIn = props => {
         </StyledForm>
         <ForgotPassword>
           <span>Don't have an account? </span>
-          <a style={{ color: "#fff" }} onClick={onToggleSignIn}>
+          <LinkButton style={{ color: "#fff" }} onClick={onToggleSignIn}>
             Sign-up here
-          </a>
+          </LinkButton>
         </ForgotPassword>
       </Container>
     </div>

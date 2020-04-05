@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 
-import { Header, HeaderRow, NavButton, LogIn } from "./style";
+import { Header, HeaderRow, LogIn } from "./style";
 
-const loggedIn = () => {
+/*const loggedIn = () => {
   return (
     <HeaderRow>
       <NavButton to="/" exact>
@@ -13,10 +13,10 @@ const loggedIn = () => {
       </NavButton>
     </HeaderRow>
   );
-};
+};*/
 
-const MainHeader = props => {
-  const { onOpenModal, onCloseModal } = props;
+const MainHeader = (props) => {
+  const { onOpenModal } = props;
 
   const logIn = useCallback(() => {
     return (
@@ -24,7 +24,7 @@ const MainHeader = props => {
         <LogIn onClick={onOpenModal}>Log in</LogIn>
       </HeaderRow>
     );
-  }, [onOpenModal, onCloseModal]);
+  }, [onOpenModal]);
 
   return (
     <Header>

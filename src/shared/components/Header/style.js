@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 export const Header = styled.header`
   width: 100%;
@@ -20,7 +20,7 @@ export const HeaderRow = styled.div`
   padding-left: 50px;
   padding-right: 50px;
   box-sizing: border-box;
-  justify-content: ${props => props.align};
+  justify-content: ${(props) => props.align};
   align-items: center;
 `;
 
