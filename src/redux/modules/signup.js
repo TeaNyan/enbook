@@ -1,4 +1,5 @@
 import { all, put, takeLatest, call } from "redux-saga/effects";
+import { push } from "connected-react-router";
 
 import { fetchMeSuccess } from "./me";
 import * as Api from "../../Api";
@@ -93,9 +94,9 @@ function* doSignup({ payload }) {
     const [me] = yield all([
       call(Api.signup, payload.name, payload.email, payload.password),
     ]);
-    console.log("me", me);
     yield put(fetchMeSuccess(me.data));
     yield put(signupSuccess());
+    yield put(push("/places"));
   } catch (err) {
     console.log(err);
     yield put(signupError(err));

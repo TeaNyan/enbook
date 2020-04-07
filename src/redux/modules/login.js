@@ -91,7 +91,6 @@ function* doLogin({ payload }) {
   try {
     yield put(loginLoading());
     const [me] = yield all([call(Api.login, payload.email, payload.password)]);
-    console.log("melogin", me);
     yield put(fetchMeSuccess(me.data));
     yield put(loginSuccess());
     yield put(push("/places"));

@@ -1,6 +1,6 @@
-import { put, takeLatest, call } from "redux-saga/effects";
+import { all, put, takeLatest, call } from "redux-saga/effects";
+import { push } from "connected-react-router";
 
-import { fetchMeSuccess } from "./me";
 import * as Api from "../../Api";
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8,37 +8,43 @@ import * as Api from "../../Api";
 // :: CONSTANTS
 //
 ///////////////////////////////////////////////////////////////////////////////
-const LOGOUT_REQUEST = "LOGOUT_REQUEST";
-const LOGOUT_LOADING = "LOGOUT_LOADING";
-const LOGOUT_ERROR = "LOGOUT_ERROR";
-const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+const ADDPLACE_REQUEST = "ADDPLACE_REQUEST";
+const ADDPLACE_LOADING = "ADDPLACE_LOADING";
+const ADDPLACE_ERROR = "ADDPLACE_ERROR";
+const ADDPLACE_SUCCESS = "ADDPLACE_SUCCESS";
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: ACTIONS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const logout = () => {
+export const addPlace = (body) => {
   return {
-    type: LOGOUT_REQUEST,
+    type: ADDPLACE_REQUEST,
+    payload: {
+      body,
+    },
   };
 };
 
-export const logoutLoading = () => {
+export const addPlaceLoading = () => {
   return {
-    type: LOGOUT_LOADING,
+    type: ADDPLACE_LOADING,
   };
 };
 
-export const logoutSuccess = () => {
+export const addPlaceSuccess = (np) => {
   return {
-    type: LOGOUT_SUCCESS,
+    type: ADDPLACE_SUCCESS,
+    payload: {
+      data: np.place,
+    },
   };
 };
 
-export const logoutError = (error) => {
+export const addPlaceError = (error) => {
   return {
-    type: LOGOUT_ERROR,
+    type: ADDPLACE_ERROR,
     payload: {
       error,
     },
@@ -50,18 +56,28 @@ export const logoutError = (error) => {
 // :: REDUCER
 //
 ///////////////////////////////////////////////////////////////////////////////
-const defaultState = { isLoading: false, error: null, success: false };
+const defaultState = {
+  newPlace: null,
+  isLoading: false,
+  error: null,
+  success: false,
+};
 
 export const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case LOGOUT_REQUEST:
+    case ADDPLACE_REQUEST:
       return defaultState;
-    case LOGOUT_LOADING:
+    case ADDPLACE_LOADING:
       return { ...state, isLoading: true };
-    case LOGOUT_ERROR:
+    case ADDPLACE_ERROR:
       return { isLoading: false, error: action.payload.error };
-    case LOGOUT_SUCCESS:
-      return { ...state, isLoading: false, success: true };
+    case ADDPLACE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        success: true,
+        newPlace: action.payload.data,
+      };
     default:
       return state;
   }
@@ -72,25 +88,24 @@ export const reducer = (state = defaultState, action) => {
 // :: SELECTORS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const selectLogoutRequest = (store) => store.logout;
+export const selectAddPlaceRequest = (store) => store.addPlace;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: SAGAS
 //
 ///////////////////////////////////////////////////////////////////////////////
-function* doLogout() {
+function* doAddPlace({ payload }) {
   try {
-    yield put(logoutLoading());
-    yield call(Api.logout);
-    yield put(fetchMeSuccess(null));
-    yield put(logoutSuccess());
-    //yield put(navigateTo("/"));
+    yield put(addPlaceLoading());
+    const [np] = yield all([call(Api.addPlace, payload.body)]);
+    yield put(addPlaceSuccess(np.data));
+    yield put(push("/places"));
   } catch (err) {
-    yield put(logoutError(err));
+    yield put(addPlaceError(err));
   }
 }
 
 export const sagas = function* () {
-  yield takeLatest(LOGOUT_REQUEST, doLogout);
+  yield takeLatest(ADDPLACE_REQUEST, doAddPlace);
 };

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { InputGroup } from "@blueprintjs/core";
+import { InputGroup, TextArea } from "@blueprintjs/core";
 
 export const Container = styled.div`
   height: auto;
@@ -17,6 +17,10 @@ export const Container = styled.div`
 `;
 
 export const Input = styled(InputGroup)`
+  color: #fd953c;
+`;
+
+export const Area = styled(TextArea)`
   color: #fd953c;
 `;
 

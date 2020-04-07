@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Spinner } from "@blueprintjs/core";
 
@@ -13,7 +13,6 @@ const MainHeader = (props) => {
   const { onOpenModal, me, onLogout, loginRequest, logoutRequest } = props;
 
   const LogInLogOut = React.memo((props) => {
-    console.log("props", props);
     const { me, onOpenModal, loginRequest, logoutRequest, onLogout } = props;
     return (
       <HeaderRow align="right">

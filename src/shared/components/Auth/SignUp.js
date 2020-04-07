@@ -21,7 +21,6 @@ const SignUp = (props) => {
   const { onToggleSignIn, signup, request, signupError } = props;
 
   useEffect(() => {
-    console.log("ovdje");
     if (request.status === -1) {
       setIsError(request.title);
     }
@@ -32,7 +31,6 @@ const SignUp = (props) => {
       if (d.password !== d.confirmPassword)
         return setIsError("Password missmatch");
       setIsError("");
-      console.log("ovdje", d.name, d.email, d.password);
       await signup(d.name, d.email, d.password);
     },
     [signup]
@@ -98,8 +96,9 @@ const SignUp = (props) => {
             />
           </FormGroup>
           {signupError && <div>{signupError.title}</div>}
+          {isError && <div>{isError}</div>}
           <Button className={classNames(Classes.INTENT_WARNING)} type="submit">
-            Sign in
+            Sign up
           </Button>
         </StyledForm>
         <ForgotPassword>

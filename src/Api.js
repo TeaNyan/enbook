@@ -22,10 +22,45 @@ const fetchApi = (url, { method, body }) => {
     )
     .then(async (res) => {
       return {
-        data: {
-          email: res.email,
-          userId: res.userId,
-        },
+        data: res,
+      };
+    })
+    .catch((err) => {
+      if (err.errors && err.errors.length) {
+        return Promise.reject(err.errors[0]);
+      } else {
+        return Promise.reject({
+          status: -1,
+          code: "ERROR_CODE_NETWORK_ERROR",
+          title: err.message || "Network Error",
+          detail: err.message || "Network Error",
+          source: {
+            pointer: url,
+          },
+        });
+      }
+    });
+};
+
+const formDataApi = (url, { method, body }) => {
+  url = API_URL + url;
+  return fetch(url, {
+    method,
+    body: body,
+    credentials: "include",
+    headers: {},
+  })
+    .then((res) =>
+      res
+        .json()
+        .catch(() =>
+          Promise.reject(new Error("No connection; check your internet!"))
+        )
+        .then((json) => (res.ok ? json : Promise.reject(json)))
+    )
+    .then(async (res) => {
+      return {
+        data: res,
       };
     })
     .catch((err) => {
@@ -69,5 +104,11 @@ export const logout = () => {
     method: "POST",
   });
 };
+
+export const addPlace = (body) =>
+  formDataApi("/places/", {
+    method: "POST",
+    body,
+  });
 
 export const getMe = () => fetchApi("/users/me", { method: "GET" });
