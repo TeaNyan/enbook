@@ -10,7 +10,16 @@ import {
 } from "../../../redux/selectors";
 
 const MainHeader = (props) => {
-  const { onOpenModal, me, onLogout, loginRequest, logoutRequest } = props;
+  const { onOpenModal, me, logout, loginRequest, logoutRequest } = props;
+
+  const logoutAttempt = async () => {
+    try {
+      await logout();
+    } catch (e) {
+      return e.message;
+    }
+    return;
+  };
 
   const LogInLogOut = React.memo((props) => {
     const { me, onOpenModal, loginRequest, logoutRequest, onLogout } = props;
@@ -38,7 +47,7 @@ const MainHeader = (props) => {
       <LogInLogOut
         onOpenModal={onOpenModal}
         me={me}
-        onLogout={onLogout}
+        onLogout={logoutAttempt}
         loginRequest={loginRequest}
         logoutRequest={logoutRequest}
       />
@@ -50,5 +59,6 @@ export default connect((state) => {
   return {
     loginRequest: selectLoginRequest(state),
     logoutRequest: selectLogoutRequest(state),
+    me: state.me,
   };
 }, Actions)(MainHeader);

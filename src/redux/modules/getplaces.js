@@ -1,6 +1,4 @@
 import { all, put, takeLatest, call } from "redux-saga/effects";
-import { push } from "connected-react-router";
-import { getPlacesSuccessAppend } from "../modules/getplaces";
 
 import * as Api from "../../Api";
 
@@ -9,52 +7,57 @@ import * as Api from "../../Api";
 // :: CONSTANTS
 //
 ///////////////////////////////////////////////////////////////////////////////
-const ADDPLACE_REQUEST = "ADDPLACE_REQUEST";
-const ADDPLACE_LOADING = "ADDPLACE_LOADING";
-const ADDPLACE_ERROR = "ADDPLACE_ERROR";
-const ADDPLACE_SUCCESS = "ADDPLACE_SUCCESS";
+const GETPLACES_REQUEST = "GETPLACES_REQUEST";
+const GETPLACES_LOADING = "GETPLACES_LOADING";
+const GETPLACES_ERROR = "GETPLACES_ERROR";
+const GETPLACES_SUCCESS = "GETPLACES_SUCCESS";
+const GETPLACES_SUCCESS_APPEND = "GETPLACES_SUCCESS_APPEND";
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: ACTIONS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const addPlace = (body) => {
+export const getPlaces = (userId) => {
   return {
-    type: ADDPLACE_REQUEST,
+    type: GETPLACES_REQUEST,
     payload: {
-      body,
-    },
-    meta: {
-      thunk: true,
+      userId,
     },
   };
 };
 
-export const addPlaceLoading = () => {
+export const getPlacesLoading = () => {
   return {
-    type: ADDPLACE_LOADING,
+    type: GETPLACES_LOADING,
   };
 };
 
-export const addPlaceSuccess = (payload, meta) => {
+export const getPlacesSuccess = (res) => {
   return {
-    type: ADDPLACE_SUCCESS,
+    type: GETPLACES_SUCCESS,
     payload: {
-      data: payload.place,
+      places: res.places,
     },
-    meta,
   };
 };
 
-export const addPlaceError = (error, meta) => {
+export const getPlacesSuccessAppend = (place) => {
+  console.log("place", place);
   return {
-    type: ADDPLACE_ERROR,
+    type: GETPLACES_SUCCESS_APPEND,
+    payload: {
+      places: place,
+    },
+  };
+};
+
+export const getPlacesError = (error) => {
+  return {
+    type: GETPLACES_ERROR,
     payload: {
       error,
     },
-    meta,
-    error: true,
   };
 };
 
@@ -64,26 +67,40 @@ export const addPlaceError = (error, meta) => {
 //
 ///////////////////////////////////////////////////////////////////////////////
 const defaultState = {
-  newPlace: null,
+  places: null,
   isLoading: false,
   error: null,
   success: false,
 };
 
 export const reducer = (state = defaultState, action) => {
+  const places = state.places
+    ? [
+        action.payload && action.payload.places && action.payload.places.place,
+        ...state.places,
+      ]
+    : [action.payload && action.payload.places && action.payload.places.place];
+
   switch (action.type) {
-    case ADDPLACE_REQUEST:
+    case GETPLACES_REQUEST:
       return defaultState;
-    case ADDPLACE_LOADING:
+    case GETPLACES_LOADING:
       return { ...state, isLoading: true };
-    case ADDPLACE_ERROR:
+    case GETPLACES_ERROR:
       return { isLoading: false, error: action.payload.error };
-    case ADDPLACE_SUCCESS:
+    case GETPLACES_SUCCESS:
       return {
         ...state,
         isLoading: false,
         success: true,
-        newPlace: action.payload.data,
+        places: action.payload.places,
+      };
+    case GETPLACES_SUCCESS_APPEND:
+      return {
+        ...state,
+        isLoading: false,
+        success: true,
+        places: places,
       };
     default:
       return state;
@@ -95,25 +112,23 @@ export const reducer = (state = defaultState, action) => {
 // :: SELECTORS
 //
 ///////////////////////////////////////////////////////////////////////////////
-export const selectAddPlaceRequest = (store) => store.addPlace;
+export const selectGetPlacesRequest = (store) => store.getPlaces;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // :: SAGAS
 //
 ///////////////////////////////////////////////////////////////////////////////
-function* doAddPlace({ payload, meta }) {
+function* doGetPlaces({ payload }) {
   try {
-    yield put(addPlaceLoading());
-    const [np] = yield all([call(Api.addPlace, payload.body)]);
-    console.log(np);
-    yield put(getPlacesSuccessAppend(np.data));
-    yield put(addPlaceSuccess(np.data, meta));
+    yield put(getPlacesLoading());
+    const [places] = yield all([call(Api.getPlacesByUserId, payload.userId)]);
+    yield put(getPlacesSuccess(places.data));
   } catch (err) {
-    yield put(addPlaceError(err, meta));
+    yield put(getPlacesError(err));
   }
 }
 
 export const sagas = function* () {
-  yield takeLatest(ADDPLACE_REQUEST, doAddPlace);
+  yield takeLatest(GETPLACES_REQUEST, doGetPlaces);
 };

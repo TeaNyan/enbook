@@ -38,7 +38,6 @@ const ImageUpload = (props) => {
     <div>
       <input
         id={props.id}
-        ref={props.register}
         style={{ display: "none" }}
         type="file"
         accept=".jpg, .png, .jpeg"

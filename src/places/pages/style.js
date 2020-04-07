@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const AddNewButton = styled.div`
-  width: 150px;
-  height: 50px;
+  width: 130px;
+  height: 40px;
   border-radius: 1em;
   background-color: #24315b;
   display: flex;
@@ -10,6 +10,7 @@ export const AddNewButton = styled.div`
   flex-direction: row;
   justify-content: center;
   cursor: pointer;
+  margin-bottom: 8px;
 `;
 
 export const ImagePreview = styled.div`

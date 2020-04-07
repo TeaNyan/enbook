@@ -16,7 +16,7 @@ import Modal from "../../shared/Modal";
 import * as Actions from "../../redux/actions";
 import { selectLoginRequest, selectSignupRequest } from "../../redux/selectors";
 
-const Home = ({ login, me, logout, loginRequest, signupRequest }) => {
+const Home = ({ login, loginRequest, signupRequest }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
 
@@ -43,15 +43,6 @@ const Home = ({ login, me, logout, loginRequest, signupRequest }) => {
     return;
   };
 
-  const logoutAttempt = async () => {
-    try {
-      await logout();
-    } catch (e) {
-      return e.message;
-    }
-    return;
-  };
-
   useEffect(() => {
     loginRequest.success && setIsModalOpen(false);
   }, [loginRequest]);
@@ -62,7 +53,7 @@ const Home = ({ login, me, logout, loginRequest, signupRequest }) => {
 
   return (
     <React.Fragment>
-      <Header onOpenModal={handleOpenModal} me={me} onLogout={logoutAttempt} />
+      <Header onOpenModal={handleOpenModal} />
       <Column>
         {isModalOpen && (
           <Modal

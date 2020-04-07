@@ -111,4 +111,9 @@ export const addPlace = (body) =>
     body,
   });
 
+export const getPlacesByUserId = (userId) =>
+  fetchApi(`/places/user/${userId}`, {
+    method: "GET",
+  });
+
 export const getMe = () => fetchApi("/users/me", { method: "GET" });

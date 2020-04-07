@@ -1,7 +1,18 @@
 import React from "react";
 
-const PlaceList = (props) => {
-  return <h2>This is a list of places</h2>;
+import PlaceItem from "./PlaceItem";
+
+const PlaceList = ({ places }) => {
+  return (
+    <React.Fragment>
+      {places &&
+        places.map((x) => {
+          console.log(x);
+          console.log(x.title, x.id);
+          return <PlaceItem key={x.id} place={x}></PlaceItem>;
+        })}
+    </React.Fragment>
+  );
 };
 
 export default PlaceList;

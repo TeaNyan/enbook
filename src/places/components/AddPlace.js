@@ -17,22 +17,18 @@ const AddPlace = ({ request, addPlace, onCloseModal }) => {
   const [file, setFile] = useState();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (d) => {
-    console.log(request);
+  const onSubmit = async (d) => {
     const formData = new FormData();
     formData.append("title", d.title);
     formData.append("description", d.description);
     formData.append("blog", d.blog);
     formData.append("image", file);
-
-    try {
-      addPlace(formData);
-    } catch (e) {
-      console.error(e);
-    }
+    addPlace(formData)
+      .then(onCloseModal)
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
-  if (request.success) onCloseModal();
 
   return (
     <React.Fragment>
