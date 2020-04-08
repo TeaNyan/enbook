@@ -17,7 +17,7 @@ const PlaceItem = ({ place }) => {
   return (
     <Column>
       <Post>
-        <PostImg src={apiUrl + place.image}></PostImg>
+        <PostImg src={`${apiUrl}/${place.image}`}></PostImg>
         <h3
           style={{
             color: "#24315b",
