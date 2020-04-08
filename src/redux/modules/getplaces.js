@@ -1,5 +1,4 @@
 import { all, put, takeLatest, call } from "redux-saga/effects";
-import { concat } from "lodash";
 
 import * as Api from "../../Api";
 

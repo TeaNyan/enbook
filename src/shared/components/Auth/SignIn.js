@@ -1,10 +1,7 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { FormGroup, Classes, Button } from "@blueprintjs/core";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
-import { connect } from "react-redux";
-
-import * as Actions from "../../../redux/actions";
 
 import {
   Container,
@@ -28,9 +25,9 @@ const SignIn = (props) => {
     return;
   };
 
-  const onSubmit = useCallback((d) => {
+  const onSubmit = (d) => {
     loginAttempt(d);
-  });
+  };
 
   return (
     <div className={props.className}>

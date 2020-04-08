@@ -36,11 +36,11 @@ const Home = ({ login, loginRequest, signupRequest, signup }) => {
 
   useEffect(() => {
     loginRequest.success && handleCloseModal();
-  }, [loginRequest]);
+  }, [loginRequest, handleCloseModal]);
 
   useEffect(() => {
     signupRequest.success && handleCloseModal();
-  }, [signupRequest]);
+  }, [signupRequest, handleCloseModal]);
 
   return (
     <React.Fragment>

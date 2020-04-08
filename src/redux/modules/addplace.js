@@ -1,5 +1,4 @@
 import { all, put, takeLatest, call } from "redux-saga/effects";
-import { push } from "connected-react-router";
 import { getPlacesSuccessAppend } from "../modules/getplaces";
 
 import * as Api from "../../Api";

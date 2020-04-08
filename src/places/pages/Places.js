@@ -14,7 +14,6 @@ import { AddNewButton } from "./style";
 import PlaceList from "../components/PlaceList";
 import Modal from "../../shared/Modal";
 import AddPlace from "../components/AddPlace";
-import SpinScreen from "../../shared/components/SpinScreen";
 import Header from "../../shared/components/Header";
 import { Spinner } from "@blueprintjs/core";
 
