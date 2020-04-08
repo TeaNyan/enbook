@@ -17,7 +17,7 @@ import {
 const SignIn = (props) => {
   const { register, handleSubmit } = useForm();
 
-  const { onToggleSignIn, onSignIn, loginError, request, login } = props;
+  const { onToggleSignIn, error, isLoading, login } = props;
 
   const loginAttempt = async (data) => {
     try {
@@ -28,12 +28,9 @@ const SignIn = (props) => {
     return;
   };
 
-  const onSubmit = useCallback(
-    async (d) => {
-      await loginAttempt(d);
-    },
-    [onSignIn]
-  );
+  const onSubmit = useCallback((d) => {
+    loginAttempt(d);
+  });
 
   return (
     <div className={props.className}>
@@ -68,11 +65,11 @@ const SignIn = (props) => {
               }}
             />
           </FormGroup>
-          {loginError && <div>{loginError.title}</div>}
+          {error && <div>{error.title}</div>}
           <Button
             className={classNames(Classes.INTENT_WARNING)}
             type="submit"
-            loading={request.isLoading}>
+            loading={isLoading}>
             Sign in
           </Button>
         </StyledForm>

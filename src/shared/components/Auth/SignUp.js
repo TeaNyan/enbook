@@ -15,13 +15,13 @@ const SignUp = (props) => {
   const [isError, setIsError] = useState("");
   const { register, handleSubmit } = useForm();
 
-  const { onToggleSignIn, signup, request, signupError } = props;
+  const { onToggleSignIn, signup, isLoading, error } = props;
 
   useEffect(() => {
-    if (request.status === -1) {
-      setIsError(request.title);
+    if (error) {
+      setIsError(error.title);
     }
-  }, [request]);
+  }, [error]);
 
   const onSubmit = useCallback(
     async (d) => {
@@ -92,12 +92,11 @@ const SignUp = (props) => {
               }}
             />
           </FormGroup>
-          {request.error && <div>{request.error.title}</div>}
           {isError && <div>{isError}</div>}
           <Button
             className={classNames(Classes.INTENT_WARNING)}
             type="submit"
-            loading={request.isLoading}>
+            loading={isLoading}>
             Sign up
           </Button>
         </StyledForm>

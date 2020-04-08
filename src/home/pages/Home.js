@@ -53,13 +53,15 @@ const Home = ({ login, loginRequest, signupRequest, signup }) => {
             {isSignIn ? (
               <SignIn
                 onToggleSignIn={handleToggleSignIn}
-                request={loginRequest}
+                isLoading={loginRequest.isLoading}
                 login={login}
+                error={loginRequest.error}
               />
             ) : (
               <SignUp
                 onToggleSignIn={handleToggleSignIn}
-                request={signupRequest}
+                isLoading={signupRequest.isLoading}
+                error={signupRequest.error}
                 signup={signup}
               />
             )}
