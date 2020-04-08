@@ -23,8 +23,10 @@ const fetchApi = (url, { method, body }) => {
     credentials: "include",
     headers: parsedHeaders,
   })
-    .then((res) => res.json())
-    .then((res) => {
+    .then((res) =>
+      res.json().then((json) => (res.ok ? json : Promise.reject(json)))
+    )
+    .then(async (res) => {
       return {
         data: res,
       };
@@ -35,7 +37,12 @@ const fetchApi = (url, { method, body }) => {
       } else {
         return Promise.reject({
           status: -1,
+          code: "ERROR_CODE_NETWORK_ERROR",
           title: err.message || "Network Error",
+          detail: err.message || "Network Error",
+          source: {
+            pointer: url,
+          },
         });
       }
     });
