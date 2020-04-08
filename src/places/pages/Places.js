@@ -14,6 +14,7 @@ import Modal from "../../shared/Modal";
 import AddPlace from "../components/AddPlace";
 import SpinScreen from "../../shared/components/SpinScreen";
 import Header from "../../shared/components/Header";
+import { Spinner } from "@blueprintjs/core";
 
 const Places = ({
   getPlaces,
@@ -37,8 +38,6 @@ const Places = ({
     if (userId) getPlaces(userId);
   }, [userId, getPlaces]);
 
-  if (getPlacesRequest.isLoading) return <SpinScreen></SpinScreen>;
-
   return (
     <Column>
       <Header></Header>
@@ -55,7 +54,11 @@ const Places = ({
         <AddIcon></AddIcon>
         Add Place
       </AddNewButton>
-      <PlaceList places={places} request={getPlacesRequest}></PlaceList>
+      {!getPlacesRequest.isLoading ? (
+        <PlaceList places={places} request={getPlacesRequest}></PlaceList>
+      ) : (
+        <Spinner></Spinner>
+      )}
     </Column>
   );
 };
