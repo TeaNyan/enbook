@@ -10,7 +10,7 @@ import {
   Area,
 } from "../../shared/components/Auth/style";
 
-const AddPlace = ({ request, addPlace, onCloseModal }) => {
+const AddPlace = ({ isLoading, addPlace, onCloseModal }) => {
   const [file, setFile] = useState();
   const [errorMessage, setNewErrorMessage] = useState("");
   const { register, handleSubmit } = useForm();
@@ -74,8 +74,7 @@ const AddPlace = ({ request, addPlace, onCloseModal }) => {
             file={file}
             setFile={setFile}
             id="image"
-            register={register}
-            request={request}
+            isLoading={isLoading}
           />
         </StyledForm>
       </Container>

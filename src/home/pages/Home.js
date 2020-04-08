@@ -129,7 +129,6 @@ const Home = ({ login, loginRequest, signupRequest, signup }) => {
 
 export default connect((state) => {
   return {
-    me: state.me,
     loginRequest: selectLoginRequest(state),
     signupRequest: selectSignupRequest(state),
   };

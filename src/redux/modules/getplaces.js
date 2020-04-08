@@ -1,4 +1,5 @@
 import { all, put, takeLatest, call } from "redux-saga/effects";
+import { pick } from "lodash";
 
 import * as Api from "../../Api";
 
@@ -112,6 +113,7 @@ export const reducer = (state = defaultState, action) => {
 //
 ///////////////////////////////////////////////////////////////////////////////
 export const selectGetPlacesRequest = (store) => store.getPlaces;
+export const selectPlaces = (store) => store.getPlaces.places;
 
 ///////////////////////////////////////////////////////////////////////////////
 //

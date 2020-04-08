@@ -1,6 +1,5 @@
 import { pick } from "lodash";
 import { all, put, takeLatest, call } from "redux-saga/effects";
-import { createSelector } from "reselect";
 import * as Api from "../../Api";
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -83,7 +82,7 @@ export const reducer = (
 export const selectMeRequest = (store) =>
   pick(store.me, ["isLoading", "error"]);
 
-export const selectMe = createSelector((store) => store.me.data);
+export const selectMe = (store) => store.me.data;
 
 ///////////////////////////////////////////////////////////////////////////////
 //

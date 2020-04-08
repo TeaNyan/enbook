@@ -1,63 +1,30 @@
 const API_URL = process.env.REACT_APP_API_URL + "/api";
 
 const fetchApi = (url, { method, body }) => {
-  url = API_URL + url;
-  return fetch(url, {
-    method,
-    body: body ? JSON.stringify(body) : null,
-    credentials: "include",
-    headers: {
+  console.log(body);
+  let parsedBody;
+  let parsedHeaders;
+
+  if (body instanceof FormData) {
+    parsedBody = body;
+    parsedHeaders = {};
+  } else {
+    parsedBody = JSON.stringify(body);
+    parsedHeaders = {
       "content-type": "application/json",
       accept: "application/json",
-    },
-  })
-    .then((res) =>
-      res
-        .json()
-        .catch(() =>
-          Promise.reject(new Error("No connection; check your internet!"))
-        )
-        .then((json) => (res.ok ? json : Promise.reject(json)))
-    )
-    .then(async (res) => {
-      return {
-        data: res,
-      };
-    })
-    .catch((err) => {
-      if (err.errors && err.errors.length) {
-        return Promise.reject(err.errors[0]);
-      } else {
-        return Promise.reject({
-          status: -1,
-          code: "ERROR_CODE_NETWORK_ERROR",
-          title: err.message || "Network Error",
-          detail: err.message || "Network Error",
-          source: {
-            pointer: url,
-          },
-        });
-      }
-    });
-};
+    };
+  }
 
-const formDataApi = (url, { method, body }) => {
   url = API_URL + url;
   return fetch(url, {
     method,
-    body: body,
+    body: parsedBody,
     credentials: "include",
-    headers: {},
+    headers: parsedHeaders,
   })
-    .then((res) =>
-      res
-        .json()
-        .catch(() =>
-          Promise.reject(new Error("No connection; check your internet!"))
-        )
-        .then((json) => (res.ok ? json : Promise.reject(json)))
-    )
-    .then(async (res) => {
+    .then((res) => res.json())
+    .then((res) => {
       return {
         data: res,
       };
@@ -68,12 +35,7 @@ const formDataApi = (url, { method, body }) => {
       } else {
         return Promise.reject({
           status: -1,
-          code: "ERROR_CODE_NETWORK_ERROR",
           title: err.message || "Network Error",
-          detail: err.message || "Network Error",
-          source: {
-            pointer: url,
-          },
         });
       }
     });
@@ -105,7 +67,7 @@ export const logout = () => {
 };
 
 export const addPlace = (body) =>
-  formDataApi("/places/", {
+  fetchApi("/places/", {
     method: "POST",
     body,
   });

@@ -6,7 +6,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { ImagePreview } from "../pages/style";
 
 const ImageUpload = (props) => {
-  const { file, setFile, request } = props;
+  const { file, setFile, isLoading } = props;
   const [previewUrl, setPreviewUrl] = useState();
 
   const filePickerRef = useRef();
@@ -64,7 +64,7 @@ const ImageUpload = (props) => {
           <Button
             intent="warning"
             type="submit"
-            loading={request && request.isLoading}
+            loading={isLoading}
             style={{
               marginTop: 10,
             }}>

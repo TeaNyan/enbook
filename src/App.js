@@ -7,7 +7,7 @@ import PrivateRoute from "./shared/components/PrivateRoute";
 import Home from "./home/pages/Home";
 import Places from "./places/pages/Places";
 import * as Actions from "./redux/actions";
-import { selectMeRequest } from "./redux/selectors";
+import { selectMeRequest, selectMe } from "./redux/selectors";
 
 const RedirectToHome = () => <Redirect to="/" />;
 
@@ -37,5 +37,5 @@ function App({ fetchMe, me, request }) {
 }
 
 export default connect((state) => {
-  return { me: state.me.data, request: selectMeRequest(state) };
+  return { me: selectMe(state), request: selectMeRequest(state) };
 }, Actions)(App);

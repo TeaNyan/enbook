@@ -7,6 +7,7 @@ import { Header, HeaderRow, LogIn, LogOut } from "./style";
 import {
   selectLoginRequest,
   selectLogoutRequest,
+  selectMe,
 } from "../../../redux/selectors";
 
 const MainHeader = (props) => {
@@ -25,7 +26,7 @@ const MainHeader = (props) => {
     const { me, onOpenModal, loginRequest, logoutRequest, onLogout } = props;
     return (
       <HeaderRow align="right">
-        {!me || !me.data ? (
+        {!me ? (
           <LogIn onClick={onOpenModal}>
             {!loginRequest.isLoading ? "Log in" : <Spinner size={20} />}
           </LogIn>
@@ -59,6 +60,6 @@ export default connect((state) => {
   return {
     loginRequest: selectLoginRequest(state),
     logoutRequest: selectLogoutRequest(state),
-    me: state.me,
+    me: selectMe(state),
   };
 }, Actions)(MainHeader);

@@ -6,6 +6,8 @@ import * as Actions from "../../redux/actions";
 import {
   selectGetPlacesRequest,
   selectAddPlaceRequest,
+  selectMe,
+  selectPlaces,
 } from "../../redux/selectors";
 import { Column } from "../../shared/layouts/Column";
 import { AddNewButton } from "./style";
@@ -45,7 +47,7 @@ const Places = ({
         <Modal onCloseModal={handleCloseModal}>
           <AddPlace
             onCloseModal={handleCloseModal}
-            request={addPlaceRequest}
+            isLoading={addPlaceRequest.isLoading}
             addPlace={addPlace}></AddPlace>
         </Modal>
       )}
@@ -67,7 +69,7 @@ export default connect((state) => {
   return {
     getPlacesRequest: selectGetPlacesRequest(state),
     addPlaceRequest: selectAddPlaceRequest(state),
-    userId: state.me.data.userId,
-    places: state.getPlaces.places,
+    userId: selectMe(state).userId,
+    places: selectPlaces(state),
   };
 }, Actions)(Places);
