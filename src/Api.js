@@ -1,4 +1,4 @@
-const API_URL = `https://enbook-api.herokuapp.com/api`;
+const API_URL = process.env.REACT_APP_API_URL + "api";
 
 const fetchApi = (url, { method, body }) => {
   url = API_URL + url;

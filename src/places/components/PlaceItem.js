@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Column } from "../../shared/layouts/Column";
 import { Post, PostImg, Description, Blog, ReadMore } from "./style";
 
-const apiUrl = "https://enbook-api.herokuapp.com/";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const PlaceItem = ({ place }) => {
   const [isBlogShown, setIsBlogShown] = useState(false);
