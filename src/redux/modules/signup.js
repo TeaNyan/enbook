@@ -98,7 +98,6 @@ function* doSignup({ payload }) {
     yield put(signupSuccess());
     yield put(push("/places"));
   } catch (err) {
-    console.log(err);
     yield put(signupError(err));
   }
 }

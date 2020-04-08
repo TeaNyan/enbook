@@ -16,7 +16,7 @@ import Modal from "../../shared/Modal";
 import * as Actions from "../../redux/actions";
 import { selectLoginRequest, selectSignupRequest } from "../../redux/selectors";
 
-const Home = ({ login, loginRequest, signupRequest }) => {
+const Home = ({ login, loginRequest, signupRequest, signup }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
 
@@ -34,21 +34,12 @@ const Home = ({ login, loginRequest, signupRequest }) => {
     setIsSignIn(nextIsSignIn);
   }, [isSignIn]);
 
-  const loginAttempt = async (data) => {
-    try {
-      await login(data.email, data.password);
-    } catch (e) {
-      return e.message;
-    }
-    return;
-  };
-
   useEffect(() => {
-    loginRequest.success && setIsModalOpen(false);
+    loginRequest.success && handleCloseModal();
   }, [loginRequest]);
 
   useEffect(() => {
-    signupRequest.success && setIsModalOpen(false);
+    signupRequest.success && handleCloseModal();
   }, [signupRequest]);
 
   return (
@@ -62,10 +53,15 @@ const Home = ({ login, loginRequest, signupRequest }) => {
             {isSignIn ? (
               <SignIn
                 onToggleSignIn={handleToggleSignIn}
-                onSignIn={loginAttempt}
+                request={loginRequest}
+                login={login}
               />
             ) : (
-              <SignUp onToggleSignIn={handleToggleSignIn} />
+              <SignUp
+                onToggleSignIn={handleToggleSignIn}
+                request={signupRequest}
+                signup={signup}
+              />
             )}
           </Modal>
         )}

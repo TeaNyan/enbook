@@ -2,10 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import { FormGroup, Classes, Button } from "@blueprintjs/core";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
-import { connect } from "react-redux";
 
-import * as Actions from "../../../redux/actions";
-import { selectLogoutRequest } from "../../../redux/selectors";
 import {
   Container,
   Input,
@@ -31,7 +28,7 @@ const SignUp = (props) => {
       if (d.password !== d.confirmPassword)
         return setIsError("Password missmatch");
       setIsError("");
-      await signup(d.name, d.email, d.password);
+      signup(d.name, d.email, d.password);
     },
     [signup]
   );
@@ -95,9 +92,12 @@ const SignUp = (props) => {
               }}
             />
           </FormGroup>
-          {signupError && <div>{signupError.title}</div>}
+          {request.error && <div>{request.error.title}</div>}
           {isError && <div>{isError}</div>}
-          <Button className={classNames(Classes.INTENT_WARNING)} type="submit">
+          <Button
+            className={classNames(Classes.INTENT_WARNING)}
+            type="submit"
+            loading={request.isLoading}>
             Sign up
           </Button>
         </StyledForm>
@@ -112,9 +112,4 @@ const SignUp = (props) => {
   );
 };
 
-export default connect((state) => {
-  return {
-    request: selectLogoutRequest(state),
-    signupError: state.signup.error,
-  };
-}, Actions)(SignUp);
+export default SignUp;

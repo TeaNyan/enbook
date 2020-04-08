@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Spinner } from "@blueprintjs/core";
+import SpinScreen from "./shared/components/SpinScreen";
 
 import PrivateRoute from "./shared/components/PrivateRoute";
 import Home from "./home/pages/Home";
@@ -20,7 +20,7 @@ function App({ fetchMe, me, request }) {
   }, [fetchMe, me]);
 
   if (request.isLoading) {
-    return <Spinner></Spinner>;
+    return <SpinScreen />;
   }
 
   return (

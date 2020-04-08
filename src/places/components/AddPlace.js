@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
 
-import * as Actions from "../../redux/actions";
-import { selectAddPlaceRequest } from "../../redux/selectors";
 import ImageUpload from "../components/ImageUpload";
 
 import {
@@ -15,6 +12,7 @@ import {
 
 const AddPlace = ({ request, addPlace, onCloseModal }) => {
   const [file, setFile] = useState();
+  const [errorMessage, setNewErrorMessage] = useState("");
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (d) => {
@@ -23,10 +21,12 @@ const AddPlace = ({ request, addPlace, onCloseModal }) => {
     formData.append("description", d.description);
     formData.append("blog", d.blog);
     formData.append("image", file);
+
+    setNewErrorMessage("");
     addPlace(formData)
       .then(onCloseModal)
       .catch((error) => {
-        console.log(error);
+        setNewErrorMessage(error.error.title);
       });
   };
 
@@ -69,6 +69,7 @@ const AddPlace = ({ request, addPlace, onCloseModal }) => {
               height: "100px",
               marginBottom: 10,
             }}></Area>
+          {errorMessage && <div>{errorMessage}</div>}
           <ImageUpload
             file={file}
             setFile={setFile}
@@ -82,8 +83,4 @@ const AddPlace = ({ request, addPlace, onCloseModal }) => {
   );
 };
 
-export default connect((state) => {
-  return {
-    request: selectAddPlaceRequest(state),
-  };
-}, Actions)(AddPlace);
+export default AddPlace;

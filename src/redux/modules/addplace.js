@@ -106,7 +106,6 @@ function* doAddPlace({ payload, meta }) {
   try {
     yield put(addPlaceLoading());
     const [np] = yield all([call(Api.addPlace, payload.body)]);
-    console.log(np);
     yield put(getPlacesSuccessAppend(np.data));
     yield put(addPlaceSuccess(np.data, meta));
   } catch (err) {

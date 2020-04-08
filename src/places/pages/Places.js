@@ -3,16 +3,26 @@ import AddIcon from "@material-ui/icons/Add";
 import { connect } from "react-redux";
 
 import * as Actions from "../../redux/actions";
-import { selectGetPlacesRequest } from "../../redux/selectors";
+import {
+  selectGetPlacesRequest,
+  selectAddPlaceRequest,
+} from "../../redux/selectors";
 import { Column } from "../../shared/layouts/Column";
 import { AddNewButton } from "./style";
 import PlaceList from "../components/PlaceList";
 import Modal from "../../shared/Modal";
 import AddPlace from "../components/AddPlace";
-import { Spinner } from "@blueprintjs/core";
+import SpinScreen from "../../shared/components/SpinScreen";
 import Header from "../../shared/components/Header";
 
-const Places = ({ getPlaces, userId, places, request }) => {
+const Places = ({
+  getPlaces,
+  userId,
+  places,
+  getPlacesRequest,
+  addPlaceRequest,
+  addPlace,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = useCallback(() => {
@@ -24,24 +34,20 @@ const Places = ({ getPlaces, userId, places, request }) => {
   }, []);
 
   useEffect(() => {
-    try {
-      console.log(userId);
-      if (userId) {
-        getPlaces(userId);
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    if (userId) getPlaces(userId);
   }, [userId, getPlaces]);
 
-  if (request.isLoading) return <Spinner></Spinner>;
+  if (getPlacesRequest.isLoading) return <SpinScreen></SpinScreen>;
 
   return (
     <Column>
       <Header></Header>
       {isModalOpen && (
         <Modal onCloseModal={handleCloseModal}>
-          <AddPlace onCloseModal={handleCloseModal}></AddPlace>
+          <AddPlace
+            onCloseModal={handleCloseModal}
+            request={addPlaceRequest}
+            addPlace={addPlace}></AddPlace>
         </Modal>
       )}
       <h2>A place to remember your journeys</h2>
@@ -49,14 +55,15 @@ const Places = ({ getPlaces, userId, places, request }) => {
         <AddIcon></AddIcon>
         Add Place
       </AddNewButton>
-      <PlaceList places={places}></PlaceList>
+      <PlaceList places={places} request={getPlacesRequest}></PlaceList>
     </Column>
   );
 };
 
 export default connect((state) => {
   return {
-    request: selectGetPlacesRequest(state),
+    getPlacesRequest: selectGetPlacesRequest(state),
+    addPlaceRequest: selectAddPlaceRequest(state),
     userId: state.me.data.userId,
     places: state.getPlaces.places,
   };

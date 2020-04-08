@@ -17,11 +17,20 @@ import {
 const SignIn = (props) => {
   const { register, handleSubmit } = useForm();
 
-  const { onToggleSignIn, onSignIn, loginError } = props;
+  const { onToggleSignIn, onSignIn, loginError, request, login } = props;
+
+  const loginAttempt = async (data) => {
+    try {
+      await login(data.email, data.password);
+    } catch (e) {
+      return e.message;
+    }
+    return;
+  };
 
   const onSubmit = useCallback(
     async (d) => {
-      await onSignIn(d);
+      await loginAttempt(d);
     },
     [onSignIn]
   );
@@ -60,7 +69,10 @@ const SignIn = (props) => {
             />
           </FormGroup>
           {loginError && <div>{loginError.title}</div>}
-          <Button className={classNames(Classes.INTENT_WARNING)} type="submit">
+          <Button
+            className={classNames(Classes.INTENT_WARNING)}
+            type="submit"
+            loading={request.isLoading}>
             Sign in
           </Button>
         </StyledForm>
@@ -75,8 +87,4 @@ const SignIn = (props) => {
   );
 };
 
-export default connect((state) => {
-  return {
-    loginError: state.login.error,
-  };
-}, Actions)(SignIn);
+export default SignIn;

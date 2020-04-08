@@ -1,14 +1,15 @@
 import React from "react";
 
 import PlaceItem from "./PlaceItem";
+import { Spinner } from "@blueprintjs/core";
 
-const PlaceList = ({ places }) => {
+const PlaceList = ({ places, request }) => {
+  if (request.isLoading) return <Spinner />;
+
   return (
     <React.Fragment>
       {places &&
         places.map((x) => {
-          console.log(x);
-          console.log(x.title, x.id);
           return <PlaceItem key={x.id} place={x}></PlaceItem>;
         })}
     </React.Fragment>

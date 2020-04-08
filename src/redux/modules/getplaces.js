@@ -43,7 +43,6 @@ export const getPlacesSuccess = (res) => {
 };
 
 export const getPlacesSuccessAppend = (place) => {
-  console.log("place", place);
   return {
     type: GETPLACES_SUCCESS_APPEND,
     payload: {
