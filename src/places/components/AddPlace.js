@@ -37,7 +37,7 @@ const AddPlace = ({ request, addPlace, onCloseModal }) => {
           <Input
             name="title"
             inputRef={register}
-            placeholder="Enter the title"
+            placeholder="Enter a title"
             type="text"
             style={{
               backgroundColor: "#021839",
